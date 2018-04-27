@@ -4,14 +4,14 @@ const {
   GraphQLString,
   GraphQLNonNull
 } = require('graphql');
-const MeType = require('./types/me');
+const UserType = require('./types/user');
 const pgdb = require('../database/pgdb');
 
 const RootQueryType = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
     me: {
-      type: MeType,
+      type: UserType,
       description: 'The current user indentified by api key',
       args: {
         key: {type: new GraphQLNonNull(GraphQLString)}
@@ -20,7 +20,7 @@ const RootQueryType = new GraphQLObjectType({
         // obj is usually null for root fields
         // args are the arguments passed to filter data, we can use args.key
         // 3rd argument is context
-        return pgdb(pgPool).getUser(args.key);
+        return pgdb(pgPool).getUserByApiKey(args.key);
       }
     }
   }
